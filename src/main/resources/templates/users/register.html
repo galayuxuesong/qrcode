@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>山东展鸿信息科技有限公司</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="applicable-device" content="mobile"/>
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" th:href="@{../layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{../css/style.css}"/>
+</head>
+
+<body>
+<form class="layui-form" onsubmit="return false">
+    <div id="toptitle">
+        <h1 class="htitle" id="htitle">
+            问卷调查
+        </h1>
+    </div>
+    <div class="divContent">
+        <fieldset class="fieldset">
+            <div class="field ui-field-contain">
+                <div class="field-label">姓名：<span class="req">*</span></div>
+                <div class="ui-input-text">
+                    <input type="text" value="" name="name" lay-verify="name" autocomplete="off"/>
+                </div>
+            </div>
+            <div class="field ui-field-contain">
+                <div class="field-label">联系电话：<span class="req">*</span></div>
+                <div class="ui-input-text">
+                    <input type="tel" value="" lay-verify="phone" name="phone" autocomplete="off" maxlength="11"/>
+                </div>
+            </div>
+            <div class="field ui-field-contain">
+                <div class="field-label">所在医院：<span class="req">*</span></div>
+                <div class="ui-input-text">
+                    <input type="text" value="" name="hospitalname" lay-verify="hospitalname"/>
+                </div>
+            </div>
+            <div class="field ui-field-contain">
+                <div class="field-label">医院等级：</div>
+                <div class="ui-input-text">
+                    <input type="text" value="" name="grade"/>
+                </div>
+            </div>
+            <div class="field ui-field-contain">
+                <div class="field-label">科室：</div>
+                <div class="ui-input-text">
+                    <input type="text" value="" name="department"/>
+                </div>
+            </div>
+            <div class="field ui-field-contain">
+                <div class="field-label">职务：</div>
+                <div class="ui-input-text">
+                    <input type="text" value="" name="position"/>
+                </div>
+            </div>
+
+            <div class="field ui-field-contain">
+                <div class="field-label">集成平台在建情况:</div>
+                <div class="ui-controlgroup two_column">
+                    <div class="ui-radio">
+                        <input type="radio" name="zj" value="0" title="在建" checked>
+                    </div>
+                    <div class="ui-radio">
+                        <input type="radio" name="zj" value="1" title="未建">
+                    </div>
+                    <div class="ui-radio">
+                        <input type="radio" name="zj" value="2" title="已建">
+                    </div>
+                </div>
+            </div>
+            <div class="field ui-field-contain">
+                <div class="field-label">平台建设厂家：</div>
+                <div class="ui-input-text">
+                    <input type="text" value="" name="ptcjname"/>
+                </div>
+            </div>
+            <div class="field ui-field-contain">
+                <div class="field-label">
+                    电子病历等级:
+                </div>
+                <div class="ui-lick">
+                    <select name="interest">
+                        <option value=""></option>
+                        <option value="1">1级</option>
+                        <option value="2">2级</option>
+                        <option value="3">3级</option>
+                        <option value="4">4级</option>
+                        <option value="5">5级</option>
+                        <option value="6">6级</option>
+                        <option value="7">7级</option>
+                        <option value="8">8级</option>
+                    </select>
+                </div>
+            </div>
+            <div class="field ui-field-contain">
+                <div class="field-label">电子病历厂家：</div>
+                <div class="ui-input-text">
+                    <input type="text" value="" name="dzblname"/>
+                </div>
+            </div>
+        </fieldset>
+        <div class="footer">
+            <div id="divSubmit" style="padding: 0px 20px 10px;">
+                <div class="voteDiv">
+                    <button type="submit" class="layui-btn layui-btn-normal" lay-submit="" lay-filter="demo1">提交
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+<script th:inline="javascript"> var ctx = [[@{
+    /}]];</script>
+<script th:src="@{../layui/layui.js}"></script>
+<script th:src="@{../js/jquery.min.js}"></script>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            layedit = layui.layedit,
+            laydate = layui.laydate;
+        //自定义验证规则
+        form.verify({
+            name: function (value) {
+                if (!value) {
+                    return '请输入您的姓名';
+                }
+            },
+            phone: function(value) {
+                var myreg = /^[1][3,5,6,7,8,9][0-9]{9}$/;
+                if (!myreg.test(value)) {
+                    return '请输入正确的手机号';
+                }
+            },
+            hospitalname: function (value) {
+                if (!value) {
+                    return '请输入您所在的医院名称';
+                }
+            },
+        });
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            var data = data.field; //提交的数据
+
+            $.ajax({
+                url: ctx + 'users/saveUsers',
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (data) {
+                    if (data.code == 200) {
+                        layer.confirm(data.errMsg, {
+                            btn: ['确定'] //按钮
+                        }, function(){
+                            window.location.href = ctx + "users/jumpQrCode?Id=" + data.Id
+                        });
+                    } else {
+                        layer.alert(data.errMsg)
+                    }
+                }
+            });
+        });
+
+    });
+</script>
+</html>

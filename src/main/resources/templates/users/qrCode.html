@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>山东展鸿信息科技有限公司</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="applicable-device" content="mobile" />
+    <meta name="robots" content="noindex">
+    <style>
+        body,
+        html {
+            position: relative;
+            height: 100%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .t-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -100px;
+            margin-top: -200px;
+        }
+
+        #qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            left: 50%;
+            top: 50%;
+            position: absolute;
+            width: 40px;
+            margin-left: -23px;
+            margin-top: -23px;
+            height: 40px;
+            padding: 3px;
+            background: #fff;
+        }
+
+        .logo img {
+            width: 40px;
+        }
+
+        .name {
+            padding: 10px 0;
+            font-size: 18px;
+            color: #005197;
+            font-weight: 900;
+        }
+
+        .text {
+            text-align: center;
+            padding: 8px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!--存放路径和值-->
+    <div class="t-box">
+        <p class="name">山东展鸿信息科技有限公司</p>
+        <div id="qrcode">
+            <div class="logo">
+                <img src="../img/logo.png" alt="">
+            </div>
+        </div>
+        <p class="text">请让工作人员扫码并领取礼品</p>
+    </div>
+
+</body>
+<script th:inline="javascript"> var ctx = [[@{
+    /}]];</script>
+<script th:src="@{../js/jquery.min.js}"></script>
+<script th:src="@{../js/qrcode.js}"></script>
+<script type="text/javascript">
+    $(function() {
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            width: 200,
+            height: 200
+        });
+        var qAddr = '[[${Iport}]]'+ctx+"users/jumpUsersInfo?Id="+'[[${Id}]]';
+        qrcode.makeCode(qAddr);
+    })
+</script>
+
+</html>

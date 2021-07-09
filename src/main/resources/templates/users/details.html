@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>山东展鸿信息科技有限公司</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="applicable-device" content="mobile" />
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" th:href="@{../layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{../css/style.css}"/>
+</head>
+
+<body>
+    <form class="layui-form">
+        <div id="toptitle">
+            <h1 class="htitle" id="htitle">
+                提交信息
+            </h1>
+        </div>
+        <div class="divContent">
+            <fieldset class="fieldset">
+                <div class="field ui-field-contain">
+                    <div class="field-label">姓名：</div>
+                    <div class="ui-input-text">
+                        <input type="text" class="layui-input" th:value="*{users.name}" name="name" readonly/>
+                    </div>
+                </div>
+                <div class="field ui-field-contain">
+                    <div class="field-label">联系电话：</div>
+                    <div class="ui-input-text">
+                        <input type="tel" th:value="*{users.phone}" name="phone" readonly/>
+                    </div>
+                </div>
+                <div class="field ui-field-contain">
+                    <div class="field-label">所在医院：</div>
+                    <div class="ui-input-text">
+                        <input type="text" th:value="*{users.hospitalname}" name="hospitalname" readonly />
+                    </div>
+                </div>
+                <div class="field ui-field-contain">
+                    <div class="field-label">医院等级：</div>
+                    <div class="ui-input-text">
+                        <input type="text" th:value="*{users.grade}" name="grade" readonly/>
+                    </div>
+                </div>
+                <div class="field ui-field-contain">
+                    <div class="field-label">科室：</div>
+                    <div class="ui-input-text">
+                        <input type="text" th:value="*{users.department}" name="department" readonly/>
+                    </div>
+                </div>
+                <div class="field ui-field-contain">
+                    <div class="field-label">职务：</div>
+                    <div class="ui-input-text">
+                        <input type="text" th:value="*{users.position}" name="position" readonly/>
+                    </div>
+                </div>
+
+                <div class="field ui-field-contain">
+                    <div class="field-label">集成平台在建情况: </div>
+                    <div class="ui-controlgroup two_column">
+                        <div class="ui-radio">
+                            <input type="radio" name="zj" value="0" title="在建" disabled>
+                        </div>
+                        <div class="ui-radio">
+                            <input type="radio" name="zj" value="1" title="未建" disabled>
+                        </div>
+                        <div class="ui-radio">
+                            <input type="radio" name="zj" value="2" title="已建" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="field ui-field-contain">
+                    <div class="field-label">平台建设厂家：</div>
+                    <div class="ui-input-text">
+                        <input type="text" th:value="*{users.ptcjname}" name="ptcjname" readonly/>
+                    </div>
+                </div>
+                <div class="field ui-field-contain">
+                    <div class="field-label">
+                        电子病历等级:
+                    </div>
+                    <div class="ui-lick">
+                        <select id="dzbldj" name="interest" disabled>
+                            <option value=""></option>
+                            <option value="1">1级</option>
+                            <option value="2">2级</option>
+                            <option value="3">3级</option>
+                            <option value="4">4级</option>
+                            <option value="5">5级</option>
+                            <option value="6">6级</option>
+                            <option value="7">7级</option>
+                            <option value="8">8级</option>
+                          </select>
+                    </div>
+                </div>
+                <div class="field ui-field-contain">
+                    <div class="field-label">电子病历厂家：</div>
+                    <div class="ui-input-text">
+                        <input type="text" th:value="*{users.dzblname}" name="dzblname" readonly/>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </form>
+
+    <script th:inline="javascript"> var ctx = [[@{
+        /}]];</script>
+    <script th:src="@{../layui/layui.js}"></script>
+    <script th:src="@{../js/jquery.min.js}"></script>
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function() {
+            var form = layui.form,
+                layer = layui.layer,
+                layedit = layui.layedit,
+                laydate = layui.laydate;
+            //自定义验证规则
+            form.verify({
+                name: function(value) {
+                    if (!value) {
+                        return '请输入您的姓名';
+                    }
+                },
+                hospitalname: function(value) {
+                    if (!value) {
+                        return '请输入您所在的医院名称';
+                    }
+                },
+            });
+
+            var zj='[[${users.zj}]]';
+            $("input[name=zj][value='0']").attr("checked",zj == '0' ? true : false);
+            $("input[name=zj][value='1']").attr("checked",zj == '1' ? true : false);
+            $("input[name=zj][value='2']").attr("checked",zj == '2' ? true : false);
+            form.render('radio');
+            var dzbldjValue='[[${users.interest}]]';
+            // 遍历select
+            $("#dzbldj").each(function() {
+                // this代表的是<option></option>，对option再进行遍历
+                $(this).children("option").each(function() {
+                    // 判断需要对那个选项进行回显
+                    if (this.value == dzbldjValue) {
+                        // 进行回显
+                        $(this).attr("selected","selected");
+                    }
+                    form.render('select');
+                });
+            })
+        });
+    </script>
+
+
+
+</body>
+
+</html>

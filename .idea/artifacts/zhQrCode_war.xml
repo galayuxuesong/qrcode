@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="zhQrCode:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>zhQrCode</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="zhQrCode-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="zhQrCode:war exploded" />
+    </root>
+  </artifact>
+</component>
